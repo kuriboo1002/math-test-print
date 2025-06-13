@@ -1,0 +1,213 @@
+body {
+    font-family: sans-serif;
+    margin: 20px;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.options {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* 要素間のスペース */
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* 画面幅が狭い場合に折り返す */
+}
+
+.options label {
+    font-weight: bold;
+}
+
+.options select,
+.options input[type="checkbox"],
+.options button {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.options input[type="checkbox"] {
+    width: auto; /* チェックボックスの幅を自動調整 */
+    margin-right: 5px; /* ラベルとの間に少しスペース */
+}
+
+
+.options button {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.options button:hover {
+    background-color: #0056b3;
+}
+
+.problems-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* 列間のスペース */
+    margin-top: 20px;
+}
+
+.problem-column {
+    width: calc(50% - 10px); /* 列の幅を調整 (gapを考慮) */
+    border: 1px solid #eee;
+    padding: 15px;
+    background-color: #fff;
+    min-height: 100px;
+}
+
+
+.problem-item {
+    margin-bottom: 30px; /* 各問題間のスペース */
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #eee; /* 問題ごとの区切り線 */
+    font-size: 1.1em; /* 問題文のフォントサイズを少し大きく */
+}
+
+.problem-item:last-child {
+    border-bottom: none; /* 最後の問題の区切り線はなし */
+}
+
+.problem-item strong {
+    margin-right: 8px;
+}
+
+.fill-in-box {
+    display: inline-block;
+    width: 30px; /* 幅を調整 */
+    height: 30px; /* 高さを調整 */
+    border: 1px solid #333;
+    margin: 0 5px; /* 前後の要素との間隔 */
+    vertical-align: middle; /* 他のテキストとの縦位置を中央に */
+    text-align: center; /* 将来的に中に文字を入れる場合のため */
+    line-height: 30px; /* 高さと合わせる */
+    background-color: #fff; /* 背景を白に */
+}
+
+.answer-text {
+    display: none; /* 通常は答えを非表示 */
+    margin-left: 10px;
+    color: #007bff; /* 答えの文字色 */
+    font-weight: bold;
+}
+
+.print-header { /* ヘッダー情報用スタイル */
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-align: center;
+    color: #555;
+}
+
+/* 印刷用スタイル */
+@media print {
+    body > *:not(.container) { 
+        display: none !important;
+    }
+    .container > *:not(.print-header):not(.problems-container) { 
+        display: none !important;
+    }
+    .print-header, .problems-container { 
+        display: block !important;
+    }
+    
+    .problems-container {
+        display: flex !important; 
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        gap: 8mm !important; /* 列間隔を少し詰める */
+    }
+    .problem-column {
+        width: calc(50% - 4mm) !important; /* 列幅調整 */
+        padding: 0 !important;
+        border: none !important;
+        background-color: transparent !important; /* 背景色を透明に */
+    }
+
+    @page {
+        size: A4; 
+        margin: 7mm; /* ページ余白を少し戻す */
+    }
+
+    html, body {
+        background-color: white !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        font-size: 20pt; /* 基本フォントサイズを戻す */
+        line-height: 1.35; /* 行間を少し広げる */
+    }
+
+    .container {
+        padding: 0 !important; 
+        margin: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+    
+    .print-header {
+        font-size: 11pt; /* ヘッダーフォントを少し大きく */
+        margin-bottom: 6mm; 
+        padding-bottom: 3mm;
+        border-bottom: 1px solid #999; 
+    }
+
+    .problem-item {
+        page-break-inside: avoid;
+        font-size: 20pt; /* 問題フォントを大きく */
+        margin-bottom: 10mm; /* 問題間マージンを広げる */
+        padding-bottom: 1.5mm; 
+        border-bottom: 1px solid #ddd; /* 区切り線を少し濃く */
+        line-height: 1.4; /* 問題文の行間を広げる */
+    }
+    .problem-item:last-child {
+        border-bottom: none;
+        margin-bottom: 0; 
+    }
+
+    .problem-item strong { 
+        font-size: 9.5pt; /* 問題番号も合わせる */
+        margin-right: 4px;
+    }
+
+    .fill-in-box {
+        width: 8mm; 
+        height: 8mm; 
+        line-height: 8mm;
+        margin: 0 1.5mm;
+        border: 1px solid black; 
+    }
+
+    .problems-container.print-with-answers .answer-text { 
+        display: inline !important; 
+        font-size: 9.5pt; /* 答えのフォントも合わせる */
+        margin-left: 6px;
+    }
+    .problems-container:not(.print-with-answers) .answer-text {
+        display: none !important; 
+    }
+
+    .problems-container svg { 
+        max-width: 100%;
+        vertical-align: middle;
+        transform: scale(0.88); /* SVGスケールを少し戻す */
+        transform-origin: left center;
+    }
+}
