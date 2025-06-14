@@ -72,7 +72,7 @@ h1 {
 
 
 .problem-item {
-    margin-bottom: 30px; /* 各問題間のスペース */
+    margin-bottom: 15px; /* 各問題間のスペース */
     padding-bottom: 10px;
     border-bottom: 1px dashed #eee; /* 問題ごとの区切り線 */
     font-size: 1.1em; /* 問題文のフォントサイズを少し大きく */
@@ -103,6 +103,7 @@ h1 {
     margin-left: 10px;
     color: #007bff; /* 答えの文字色 */
     font-weight: bold;
+    font-size: 1.1em; /* 問題文のフォントサイズに合わせる */
 }
 
 .print-header { /* ヘッダー情報用スタイル */
@@ -131,18 +132,18 @@ h1 {
         display: flex !important; 
         flex-direction: row !important;
         justify-content: space-between !important;
-        gap: 8mm !important; /* 列間隔を少し詰める */
+        gap: 8mm !important; 
     }
     .problem-column {
-        width: calc(50% - 4mm) !important; /* 列幅調整 */
+        width: calc(50% - 4mm) !important; 
         padding: 0 !important;
         border: none !important;
-        background-color: transparent !important; /* 背景色を透明に */
+        background-color: transparent !important; 
     }
 
     @page {
         size: A4; 
-        margin: 7mm; /* ページ余白を少し戻す */
+        margin: 8mm; /* ページ余白を少し確保 */
     }
 
     html, body {
@@ -151,8 +152,8 @@ h1 {
         padding: 0 !important;
         width: 100% !important;
         height: auto !important;
-        font-size: 20pt; /* 基本フォントサイズを戻す */
-        line-height: 1.35; /* 行間を少し広げる */
+        font-size: 11pt; /* 基本フォントサイズを大きく */
+        line-height: 1.4; /* 行間も少し広げる */
     }
 
     .container {
@@ -163,19 +164,19 @@ h1 {
     }
     
     .print-header {
-        font-size: 11pt; /* ヘッダーフォントを少し大きく */
-        margin-bottom: 6mm; 
+        font-size: 12pt; /* ヘッダーフォントも調整 */
+        margin-bottom: 7mm; 
         padding-bottom: 3mm;
-        border-bottom: 1px solid #999; 
+        border-bottom: 1px solid #888; 
     }
 
     .problem-item {
         page-break-inside: avoid;
-        font-size: 20pt; /* 問題フォントを大きく */
-        margin-bottom: 10mm; /* 問題間マージンを広げる */
-        padding-bottom: 1.5mm; 
-        border-bottom: 1px solid #ddd; /* 区切り線を少し濃く */
-        line-height: 1.4; /* 問題文の行間を広げる */
+        font-size: 20pt; /* 問題フォントを画面表示時の1.1em相当に近づける (1em = 10ptと仮定) */
+        margin-bottom: 4mm; /* 問題間マージンを確保 */
+        padding-bottom: 2mm; 
+        border-bottom: 1px solid #ccc; 
+        line-height: 1.5; /* 問題文の行間を確保 */
     }
     .problem-item:last-child {
         border-bottom: none;
@@ -183,22 +184,23 @@ h1 {
     }
 
     .problem-item strong { 
-        font-size: 9.5pt; /* 問題番号も合わせる */
-        margin-right: 4px;
+        font-size: 11pt; /* 問題番号も合わせる */
+        margin-right: 5px;
     }
 
     .fill-in-box {
-        width: 8mm; 
-        height: 8mm; 
-        line-height: 8mm;
-        margin: 0 1.5mm;
+        width: 9mm; 
+        height: 9mm; 
+        line-height: 9mm;
+        margin: 0 2mm;
         border: 1px solid black; 
     }
 
+    /* 「答えを印刷」時のスタイル */
     .problems-container.print-with-answers .answer-text { 
         display: inline !important; 
-        font-size: 9.5pt; /* 答えのフォントも合わせる */
-        margin-left: 6px;
+        font-size: 20pt; /* 答えのフォントも問題文に合わせる */
+        margin-left: 7px;
     }
     .problems-container:not(.print-with-answers) .answer-text {
         display: none !important; 
@@ -207,7 +209,7 @@ h1 {
     .problems-container svg { 
         max-width: 100%;
         vertical-align: middle;
-        transform: scale(0.88); /* SVGスケールを少し戻す */
+        transform: scale(0.95); /* SVGスケールを調整 */
         transform-origin: left center;
     }
 }

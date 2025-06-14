@@ -83,9 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     printAnswersButton.addEventListener('click', () => {
         setPrintHeader();
-        problemsArea.classList.add('print-with-answers');
+        problemsArea.classList.add('print-with-answers'); 
         window.print();
-        problemsArea.classList.remove('print-with-answers');
+        setTimeout(() => {
+            problemsArea.classList.remove('print-with-answers'); 
+        }, 100); 
     });
 
     function generateProblems(grade, selectedTopicKey, numQuestions, useFillInTheBlank) {
@@ -122,9 +124,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const generatedQuestions = new Set();
         let generatedCount = 0;
-        const maxAttemptsPerQuestionType = 30; // 少し試行回数を増やす
+        const maxAttemptsPerQuestionType = 30;
 
-        for (let i = 0; i < numQuestions; i++) { // numQuestions は 20 固定
+        for (let i = 0; i < numQuestions; i++) { 
             let question = '';
             let answer = '';
             let problemType = '';
@@ -142,8 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     num2 = Math.floor(Math.random() * 9) + 1;
                 }
 
-                // ... (既存のswitchケースでの問題生成ロジックは変更なし) ...
-                // (前のメッセージで提示した小数問題の修正を含むロジックをここにペースト)
                 switch (problemType) {
                     case '1位数同士のたし算':
                     case '2位数と1位数のたし算 (簡単)':
@@ -215,9 +215,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         question = `${dividend} ÷ ${divisor} = `;
                         break;
                     case '小数第一位のたし算':
-                        num1 = parseFloat(((Math.random() * 89) + 1) / 10 .toFixed(1)); // 0.1 to 9.0
+                        num1 = parseFloat(((Math.random() * 89) + 1) / 10 .toFixed(1)); 
                         num2 = parseFloat(((Math.random() * 89) + 1) / 10 .toFixed(1));
-                        if(num1 % 1 === 0) num1 = parseFloat((num1 + 0.1).toFixed(1)); // Ensure not X.0
+                        if(num1 % 1 === 0) num1 = parseFloat((num1 + 0.1).toFixed(1)); 
                         if(num2 % 1 === 0) num2 = parseFloat((num2 + 0.1).toFixed(1));
                         answer = Math.round((num1 + num2) * 10) / 10;
                         question = `${num1.toFixed(1)} + ${num2.toFixed(1)} = `;
@@ -264,18 +264,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         question = `${num1.toFixed(1)} ${problemType.includes('たし算') ? '+' : '-'} ${num2.toFixed(1)} = `;
                         break;
                     case '小数のかけ算 (かける数整数)':
-                        num1 = parseFloat(((Math.random() * 98) + 1) / 10 .toFixed(1)); // 0.1 to 9.9
-                        if (num1 % 1 === 0) { // もしX.0になった場合
+                        num1 = parseFloat(((Math.random() * 98) + 1) / 10 .toFixed(1)); 
+                        if (num1 % 1 === 0) { 
                            num1 = parseFloat((num1 + (Math.floor(Math.random() * 9) + 1) / 10).toFixed(1));
-                           if (num1 >= 10.0) num1 = parseFloat((num1 - 1).toFixed(1)); // 10.X -> 9.X
+                           if (num1 >= 10.0) num1 = parseFloat((num1 - 1).toFixed(1)); 
                            num1 = Math.max(0.1, num1);
                         }
-                        num2 = Math.floor(Math.random() * 9) + 1; // 整数 1-9
+                        num2 = Math.floor(Math.random() * 9) + 1; 
                         answer = Math.round(num1 * num2 * 100) / 100;
                         question = `${num1.toFixed(1)} × ${num2} = `;
                         break;
                     case '小数のわり算 (わる数整数)':
-                        let dec_div_dividend = parseFloat(((Math.random() * 998) + 1) / 10 .toFixed(1)); // 0.1 to 99.9
+                        let dec_div_dividend = parseFloat(((Math.random() * 998) + 1) / 10 .toFixed(1)); 
                         if (dec_div_dividend % 1 === 0) {
                             dec_div_dividend = parseFloat((dec_div_dividend + (Math.floor(Math.random() * 9) + 1) / 10).toFixed(1));
                             dec_div_dividend = Math.max(0.1, dec_div_dividend);
@@ -433,28 +433,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 originalCalculationResult = answer;
 
-                if (useFillInTheBlank && Math.random() < 0.5 && !problemType.includes('混合計算') && !problemType.includes('比') && !question.includes('frac')) {
+                if (useFillInTheBlank && Math.random() < 0.5 && !problemType.includes('混合計算') && !problemType.includes('比')) { 
                     let tempQuestionStr = question.substring(0, question.lastIndexOf('=') + 1);
-                    let parts = tempQuestionStr.split(/([+\-×÷])/);
+                    let parts = tempQuestionStr.split(/([+\-×÷])/); 
+                    
                     if (parts.length >= 3) {
                         const operand1_str = parts[0].trim();
                         const operator_str = parts[1].trim();
                         const operand2_str = parts[2].trim().replace('=', '').trim();
                         const blankBoxHtml = '<span class="fill-in-box"></span>';
+                        const makeOperand1Blank = Math.random() < 0.5;
 
-                        if (Math.random() < 0.5 && operand1_str !== originalCalculationResult.toString()) {
+                        if (makeOperand1Blank && operand1_str !== originalCalculationResult.toString()) {
                             question = `${blankBoxHtml} ${operator_str} ${operand2_str} = ${originalCalculationResult}`;
-                            answer = parseFloat(operand1_str);
-                        } else if (operand2_str !== originalCalculationResult.toString()) {
+                            answer = operand1_str.includes('frac') ? operand1_str : parseFloat(operand1_str); 
+                        } else if (!makeOperand1Blank && operand2_str !== originalCalculationResult.toString()) {
                             question = `${operand1_str} ${operator_str} ${blankBoxHtml} = ${originalCalculationResult}`;
-                            answer = parseFloat(operand2_str);
+                            answer = operand2_str.includes('frac') ? operand2_str : parseFloat(operand2_str); 
                         } else {
-                             answer = originalCalculationResult;
+                             answer = originalCalculationResult; 
                         }
                     } else {
-                        answer = originalCalculationResult;
+                        answer = originalCalculationResult; 
                     }
                 }
+
 
                 if (!generatedQuestions.has(question)) {
                     generatedQuestions.add(question);
