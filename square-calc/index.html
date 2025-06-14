@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100マス計算ジェネレーター</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>100マス計算</h1>
+
+        <div class="options">
+            <div class="option-row">
+                <label>計算の種類:</label>
+                <div>
+                    <input type="radio" id="multiply" name="operationType" value="multiply" checked>
+                    <label for="multiply">乗算 (×)</label>
+                    <input type="radio" id="add" name="operationType" value="add">
+                    <label for="add">加算 (+)</label>
+                    <input type="radio" id="subtract" name="operationType" value="subtract">
+                    <label for="subtract">減算 (-)</label>
+                    <input type="radio" id="divide" name="operationType" value="divide">
+                    <label for="divide">除算 (÷)</label>
+                </div>
+            </div>
+            <div class="option-row">
+                <label for="calcType">計算タイプ:</label>
+                <select id="calcType">
+                    <option value="1x1">1桁 × 1桁</option>
+                    <option value="2x1">2桁 × 1桁</option>
+                    <option value="2x2">2桁 × 2桁</option>
+                </select>
+            </div>
+            <div class="option-row">
+                <label for="minVal1">数値1 最小値:</label>
+                <input type="number" id="minVal1" value="0">
+                <label for="maxVal1">数値1 最大値:</label>
+                <input type="number" id="maxVal1" value="9">
+            </div>
+            <div class="option-row">
+                <label for="minVal2">数値2 最小値:</label>
+                <input type="number" id="minVal2" value="0">
+                <label for="maxVal2">数値2 最大値:</label>
+                <input type="number" id="maxVal2" value="9">
+            </div>
+            <div class="option-row">
+                <button id="generateBtn">マスを生成</button>
+                <button id="printBtn">印刷</button>
+            </div>
+        </div>
+
+        <div class="grid-container">
+            <table id="calcGrid">
+                <!-- マスはJavaScriptで生成 -->
+            </table>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

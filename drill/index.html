@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>算数ドリル生成</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+          },
+          svg: {
+            fontCache: 'global'
+          }
+        };
+    </script>
+    <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js">
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>算数ドリル生成</h1>
+
+        <div class="options">
+            <label for="grade">学年:</label>
+            <select id="grade">
+                <option value="1">1年生</option>
+                <option value="2">2年生</option>
+                <option value="3">3年生</option>
+                <option value="4">4年生</option>
+                <option value="5">5年生</option>
+                <option value="6">6年生</option>
+            </select>
+
+            <label for="topicSelect">単元:</label>
+            <select id="topicSelect">
+                <option value="all">すべての単元</option>
+                <!-- 単元はJavaScriptで動的に追加されます -->
+            </select>
+
+            <label for="fillInTheBlank">虫食い計算:</label>
+            <input type="checkbox" id="fillInTheBlank">
+
+            <button id="generateButton">問題を生成</button>
+            <button id="printButton">問題を印刷</button>
+            <button id="printAnswersButton">答えを印刷</button>
+        </div>
+
+        <div id="printHeaderInfo" class="print-header"></div> <!-- 印刷時ヘッダー情報用 -->
+        <div class="problems-container" id="problemsArea">
+            <div class="problem-column" id="problem-column-1"></div>
+            <div class="problem-column" id="problem-column-2"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

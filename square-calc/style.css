@@ -1,0 +1,168 @@
+body {
+    font-family: sans-serif;
+    margin: 20px;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px; /* 100マスの幅を考慮 */
+    margin: 0 auto; /* 中央寄せ */
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.options {
+    display: flex;
+    flex-direction: column; /* 縦方向に並べる */
+    gap: 10px; /* 各行の間のスペース */
+    margin-bottom: 20px;
+}
+
+.option-row {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* 行内の要素間のスペース */
+}
+
+.option-row > div { /* ラジオボタンのグループを横並びにするため */
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.option-row input[type="radio"] {
+    margin-right: 2px;
+}
+
+
+.options label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.options select,
+.options input[type="number"],
+.options button {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.options input[type="number"] {
+    width: 60px;
+}
+
+.options button {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.options button:hover {
+    background-color: #0056b3;
+}
+
+.grid-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center; /* テーブルを中央寄せ */
+}
+
+#calcGrid {
+    border-collapse: collapse;
+    border: 2px solid #333; /* 外枠を太く */
+}
+
+#calcGrid th,
+#calcGrid td {
+    border: 1px solid #ccc;
+    width: 40px; /* マスの幅 */
+    height: 40px; /* マスの高さ */
+    text-align: center;
+    vertical-align: middle;
+    font-size: 1.1em;
+}
+
+#calcGrid th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+#calcGrid td.header-cell { /* 左上隅のセル */
+    background-color: #e0e0e0;
+    font-weight: bold;
+}
+
+/* 印刷用スタイル */
+@media print {
+    body > *:not(.container) {
+        display: none !important;
+    }
+    .container > *:not(.grid-container) {
+        display: none !important;
+    }
+    .grid-container {
+        display: block !important;
+        margin-top: 0;
+    }
+
+    @page {
+        size: A4 landscape; /* 横向きA4 */
+        margin: 5mm; /* 余白を少し減らす */
+    }
+
+    html, body {
+        background-color: white !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        font-size: 10pt;
+    }
+
+    .container {
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        max-width: none;
+    }
+
+    #calcGrid {
+        border: 1px solid #000;
+    }
+
+    #calcGrid th,
+    #calcGrid td {
+        /* A4横 (297mm x 210mm) から余白(左右計10mm, 上下計10mm)を引いた領域を11マスで割る */
+        /* 幅: (297 - 10) / 11 = 26.09mm */
+        /* 高さ: (210 - 10) / 11 = 18.18mm */
+        /* より小さい方に合わせるか、セルの内容に応じて調整 */
+        width: calc((297mm - 10mm - 10px) / 11); /* 10pxは枠線などの微調整分 */
+        height: calc((210mm - 10mm - 10px) / 11);
+        font-size: 14pt; /* フォントサイズを少し大きく */
+        border: 1px solid #333;
+        box-sizing: border-box; /* 枠線を含めてサイズ計算 */
+    }
+
+    #calcGrid th {
+        background-color: #eee !important; /* 印刷時の背景色は !important が必要 */
+        -webkit-print-color-adjust: exact; /* Chrome, Safari */
+        color-adjust: exact; /* Firefox */
+    }
+    #calcGrid td.header-cell {
+        background-color: #ddd !important;
+        -webkit-print-color-adjust: exact;
+        color-adjust: exact;
+    }
+}
