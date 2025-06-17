@@ -7,9 +7,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container"> <!-- options-container と container-for-printable を統合 -->
         <h1>100マス計算</h1>
-
         <div class="options">
             <div class="option-row">
                 <label>計算の種類:</label>
@@ -48,14 +47,35 @@
                 <button id="generateBtn">マスを生成</button>
                 <button id="printBtn">印刷</button>
             </div>
-        </div>
+        </div> <!-- options を閉じる -->
 
-        <div class="grid-container">
-            <table id="calcGrid">
-                <!-- マスはJavaScriptで生成 -->
-            </table>
+        <!-- printable-area を options と同じ階層に配置 -->
+        <div class="printable-area">
+            <div class="grid-instance">
+                <div class="info-fields">
+                    <span>日付: <span class="underline-input">　　</span> 年 <span class="underline-input">　　</span> 月 <span class="underline-input">　　</span> 日</span>
+                    <span>タイム: <span class="underline-input">　　</span> 分 <span class="underline-input">　　</span> 秒</span>
+                </div>
+                <div class="grid-container">
+                    <table id="calcGrid1">
+                        <!-- マスはJavaScriptで生成 -->
+                    </table>
+                </div>
+            </div>
+            <div class="grid-instance">
+                <div class="info-fields">
+                    <span>日付: <span class="underline-input">　　</span> 年 <span class="underline-input">　　</span> 月 <span class="underline-input">　　</span> 日</span>
+                    <span>タイム: <span class="underline-input">　　</span> 分 <span class="underline-input">　　</span> 秒</span>
+                </div>
+                <div class="grid-container">
+                    <table id="calcGrid2">
+                        <!-- マスはJavaScriptで生成 -->
+                    </table>
+                </div>
+            </div>
         </div>
-    </div>
+        <!-- container-for-printable は削除 -->
+    </div> <!-- container を閉じる -->
 
     <script src="script.js"></script>
 </body>

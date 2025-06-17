@@ -7,7 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const maxVal2Input = document.getElementById('maxVal2');
     const generateBtn = document.getElementById('generateBtn');
     const printBtn = document.getElementById('printBtn'); // 追加
-    const calcGridTable = document.getElementById('calcGrid');
+    const calcGridTable1 = document.getElementById('calcGrid1');
+    const calcGridTable2 = document.getElementById('calcGrid2');
+
 
     const defaultValues = {
         '1x1': { min1: 0, max1: 9, min2: 0, max2: 9 },
@@ -46,7 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function generateGrid() {
+    function generateGrid(targetTable) {
+        if (!targetTable) {
+            console.error('Target table is not defined for generateGrid');
+            return;
+        }
         const operationType = getSelectedOperationType();
         const min1 = parseInt(minVal1Input.value);
         const max1 = parseInt(maxVal1Input.value);
@@ -96,10 +102,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const verticalNumbers = getRandomNumbers(min2, max2);
 
         // テーブルをクリア
-        calcGridTable.innerHTML = '';
+        targetTable.innerHTML = '';
 
         // ヘッダー行を作成 (一番上の行)
-        const headerRow = calcGridTable.insertRow();
+        const headerRow = targetTable.insertRow();
         const cornerCell = headerRow.insertCell(); // 左上隅のセル
         cornerCell.classList.add('header-cell');
         cornerCell.textContent = getOperationSymbol(operationType); // 演算記号
@@ -112,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // データ行を作成
         verticalNumbers.forEach(vNum => {
-            const row = calcGridTable.insertRow();
+            const row = targetTable.insertRow(); //修正点: calcGridTable -> targetTable
             const th = document.createElement('th'); // 左端のヘッダーセル
             th.textContent = vNum;
             row.appendChild(th);
@@ -138,19 +144,23 @@ document.addEventListener('DOMContentLoaded', () => {
     //     }
     // }
 
+    function generateBothGrids() {
+        generateGrid(calcGridTable1);
+        generateGrid(calcGridTable2);
+    }
 
-    generateBtn.addEventListener('click', generateGrid);
+    generateBtn.addEventListener('click', generateBothGrids);
 
     printBtn.addEventListener('click', () => { // 追加
         window.print();
     });
 
-    operationTypeRadios.forEach(radio => {
-        radio.addEventListener('change', generateGrid);
-    });
+    // operationTypeRadios.forEach(radio => {
+    //     radio.addEventListener('change', generateGrid); // ボタン押下時のみ生成に変更
+    // });
 
     // 初期表示時にデフォルト値を設定
     updateInputValues(calcTypeSelect.value);
-    // 初期表示時にグリッドを生成
-    generateGrid();
+    // 初期表示時のグリッド生成を削除。ボタン押下時のみ生成する。
+    // generateGrid();
 });

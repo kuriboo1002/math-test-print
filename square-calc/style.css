@@ -5,14 +5,16 @@ body {
     color: #333;
 }
 
-.container {
+.container { /* 元の .container スタイルに戻す */
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 800px; /* 100マスの幅を考慮 */
+    max-width: 800px;
     margin: 0 auto; /* 中央寄せ */
 }
+/* .options-container と .container-for-printable のスタイルは削除 */
+
 
 h1 {
     text-align: center;
@@ -72,95 +74,168 @@ h1 {
     background-color: #0056b3;
 }
 
+.printable-area {
+    margin-top: 30px;
+}
+
+.grid-instance {
+    margin-bottom: 30px; /* 各マスの間のスペース */
+    page-break-inside: avoid; /* 印刷時にマスが途中で改ページされないように */
+}
+
+.info-fields {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+.underline-input {
+    border-bottom: 1px solid #333;
+    padding: 0 5px;
+    display: inline-block;
+    min-width: 30px; /* 最低幅 */
+}
+
+
 .grid-container {
-    margin-top: 20px;
+    margin-top: 5px; /* info-fieldsとの間隔調整 */
     display: flex;
     justify-content: center; /* テーブルを中央寄せ */
 }
 
-#calcGrid {
+table[id^="calcGrid"] { /* calcGrid1, calcGrid2 の両方に適用 */
     border-collapse: collapse;
     border: 2px solid #333; /* 外枠を太く */
 }
 
-#calcGrid th,
-#calcGrid td {
+table[id^="calcGrid"] th,
+table[id^="calcGrid"] td {
     border: 1px solid #ccc;
-    width: 40px; /* マスの幅 */
-    height: 40px; /* マスの高さ */
+    width: 35px; /* マスの幅を少し小さくして2つ並べやすくする */
+    height: 35px; /* マスの高さを少し小さく */
     text-align: center;
     vertical-align: middle;
-    font-size: 1.1em;
+    font-size: 1em; /* フォントサイズも少し調整 */
 }
 
-#calcGrid th {
+table[id^="calcGrid"] th {
     background-color: #f0f0f0;
     font-weight: bold;
 }
 
-#calcGrid td.header-cell { /* 左上隅のセル */
+table[id^="calcGrid"] td.header-cell { /* 左上隅のセル */
     background-color: #e0e0e0;
     font-weight: bold;
 }
 
 /* 印刷用スタイル */
 @media print {
-    body > *:not(.container) {
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background-color: white !important;
+        -webkit-print-color-adjust: exact !important; /* Chrome, Safari */
+        color-adjust: exact !important; /* Firefox */
+    }
+
+    /* 非表示にする要素 */
+    .container > *:not(.printable-area), /* .container 内の .printable-area 以外の要素を非表示 */
+    .options { /* .options は .container の子なので、これも非表示対象に含める */
         display: none !important;
     }
-    .container > *:not(.grid-container) {
-        display: none !important;
+    /* h1 は .options の中ではないが、.container の子なので上記セレクタで非表示になる */
+
+
+    .printable-area {
+        display: block !important;
+        margin: 0; /* printable-area 自体のマージンは0に */
+        padding: 10mm; /* 印刷時の余白は printable-area に設定 */
+        width: 100%; /* 親要素（この場合は body）の幅に合わせる */
+        box-sizing: border-box;
+        background-color: white !important;
     }
+
+
+    .grid-instance {
+        width: 100%;
+        margin-bottom: 10mm;
+        page-break-inside: avoid;
+    }
+    .grid-instance:last-child {
+        margin-bottom: 0;
+    }
+
     .grid-container {
         display: block !important;
-        margin-top: 0;
+        margin-top: 2mm;
     }
 
     @page {
-        size: A4 landscape; /* 横向きA4 */
-        margin: 5mm; /* 余白を少し減らす */
+        size: A4 portrait;
+        margin: 0; /* @pageのmarginは0にして、.printable-areaで制御 */
     }
 
-    html, body {
+    html {
         background-color: white !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        width: 100% !important;
-        height: auto !important;
         font-size: 10pt;
+        -webkit-print-color-adjust: exact !important;
+        color-adjust: exact !important;
     }
 
-    .container {
-        padding: 0 !important;
-        margin: 0 !important;
-        border: none !important;
-        box-shadow: none !important;
-        max-width: none;
+    /* .container のスタイルは印刷時には display:none になるので特別なスタイルは不要 */
+    /* ただし、printable-area がその中に残るため、
+       .container 自体を display:none にすると printable-area も消える。
+       そのため、上記のセレクタで .container の *子要素* を非表示にしている。
+    */
+    @media print {
+        .container { /* 印刷時、.container 自体は表示されるが、背景や枠は不要 */
+            background-color: white !important;
+            padding: 0 !important;
+            border: none !important;
+            box-shadow: none !important;
+            max-width: none !important; /* 幅の制限も解除 */
+        }
     }
 
-    #calcGrid {
-        border: 1px solid #000;
+
+    .info-fields {
+        font-size: 9pt;
+        margin-bottom: 5mm;
+    }
+    .underline-input {
+        border-bottom: 0.5pt solid #333;
+        padding: 0 2mm;
+        min-width: 10mm;
     }
 
-    #calcGrid th,
-    #calcGrid td {
-        /* A4横 (297mm x 210mm) から余白(左右計10mm, 上下計10mm)を引いた領域を11マスで割る */
-        /* 幅: (297 - 10) / 11 = 26.09mm */
-        /* 高さ: (210 - 10) / 11 = 18.18mm */
-        /* より小さい方に合わせるか、セルの内容に応じて調整 */
-        width: calc((297mm - 10mm - 10px) / 11); /* 10pxは枠線などの微調整分 */
-        height: calc((210mm - 10mm - 10px) / 11);
-        font-size: 14pt; /* フォントサイズを少し大きく */
-        border: 1px solid #333;
-        box-sizing: border-box; /* 枠線を含めてサイズ計算 */
+
+    table[id^="calcGrid"] {
+        border: 0.5pt solid #000;
+        width: 100%; /* 利用可能な幅いっぱいに */
+        table-layout: fixed; /* セル幅を均等にするため */
     }
 
-    #calcGrid th {
-        background-color: #eee !important; /* 印刷時の背景色は !important が必要 */
-        -webkit-print-color-adjust: exact; /* Chrome, Safari */
-        color-adjust: exact; /* Firefox */
+    table[id^="calcGrid"] th,
+    table[id^="calcGrid"] td {
+        /* A4縦 (210mm幅) から余白(左右計20mm)を引いた領域を11マスで割る */
+        /* 幅・高さ: (210mm - 20mm) / 11 = 約17.27mm */
+        /* 2つのマスを縦に並べるので、高さはA4高さの半分弱を目安に */
+        /* (297mm - 上下余白20mm - マス間余白10mm) / 2 (マス2つ分) / 11 (行数) */
+        /* = (297 - 20 - 10) / 2 / 11 = 267 / 22 = 約12.1mm */
+        width: calc((100% - 2px) / 11); /* 枠線を考慮 */
+        height: 11mm; /* 高さを固定値で指定。必要に応じて調整 */
+        font-size: 10pt;
+        border: 0.5pt solid #333;
+        box-sizing: border-box;
     }
-    #calcGrid td.header-cell {
+
+    table[id^="calcGrid"] th {
+        background-color: #eee !important;
+        -webkit-print-color-adjust: exact;
+        color-adjust: exact;
+    }
+    table[id^="calcGrid"] td.header-cell {
         background-color: #ddd !important;
         -webkit-print-color-adjust: exact;
         color-adjust: exact;
