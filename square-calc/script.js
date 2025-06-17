@@ -78,24 +78,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
 
-        // 10個のランダムな数値を生成する関数
-        function getRandomNumbers(min, max, count = 10) {
-            const numbers = new Set();
-            if (max - min + 1 < count) { // 生成可能な数値の範囲がcountより小さい場合
-                // 全ての数値を順番に使う
-                for (let i = min; i <= max; i++) {
-                    numbers.add(i);
-                }
-                // 足りない分は重複を許してランダムに追加（このケースは稀だが念のため）
-                while(numbers.size < count) {
-                    numbers.add(Math.floor(Math.random() * (max - min + 1)) + min);
-                }
-                return Array.from(numbers).slice(0, count); // 念のためcount個に制限
+        // 利用可能な範囲でユニークなランダムな数値を生成し、最大10個に制限する関数
+        function getRandomNumbers(min, max) {
+            const availableNumbersCount = max - min + 1;
+            if (availableNumbersCount <= 0) {
+                return []; // 不正な範囲の場合は空配列を返す
             }
-            while (numbers.size < count) {
-                numbers.add(Math.floor(Math.random() * (max - min + 1)) + min);
+
+            const numbers = [];
+            for (let i = min; i <= max; i++) {
+                numbers.push(i);
             }
-            return Array.from(numbers);
+
+            // 配列をシャッフル (Fisher-Yates shuffle)
+            for (let i = numbers.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
+            }
+            
+            // 利用可能な数値の数が10より少ない場合はその数だけ、多い場合は10個にスライス
+            return numbers.slice(0, Math.min(availableNumbersCount, 10));
         }
 
         const horizontalNumbers = getRandomNumbers(min1, max1);
@@ -118,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // データ行を作成
         verticalNumbers.forEach(vNum => {
-            const row = targetTable.insertRow(); //修正点: calcGridTable -> targetTable
+            const row = targetTable.insertRow();
             const th = document.createElement('th'); // 左端のヘッダーセル
             th.textContent = vNum;
             row.appendChild(th);
