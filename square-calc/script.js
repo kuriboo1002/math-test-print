@@ -12,9 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     const defaultValues = {
-        '1x1': { min1: 0, max1: 9, min2: 0, max2: 9 },
-        '2x1': { min1: 10, max1: 20, min2: 0, max2: 9 },
-        '2x2': { min1: 10, max1: 20, min2: 10, max2: 20 }
+        '1x1': { min1: 1, max1: 10, min2: 1, max2: 10 },
+        '2x1': { min1: 11, max1: 20, min2: 1, max2: 10 },
+        '2x2': { min1: 11, max1: 20, min2: 11, max2: 20 }
     };
 
     function updateInputValues(type) {
@@ -69,11 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (operationType === 'divide') {
             if (min1 === 0 || min2 === 0) {
-                // 0での除算を避けるため、ユーザーに通知するか、値を調整する
-                // ここでは簡単なアラートを表示し、生成を中止する
-                // alert('除算の場合、0を範囲に含めることはできません。範囲を調整してください。');
-                // return;
-                // もしくは、0が含まれないように最小値を1にするなどの調整も考えられる
+                alert('除算の場合、0を範囲に含めることはできません。範囲を調整してください。');
+                return;
             }
         }
 
